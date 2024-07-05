@@ -1,0 +1,77 @@
+import random
+
+
+def deal_card():
+    return random.sample(deck, 2)
+
+
+def pick_card():
+    return random.choice(deck)
+
+
+deck = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+player_hand = deal_card()
+dealer_hand = deal_card()
+
+print(f"the player hand : {player_hand} = {sum(player_hand)}")
+print(f"The dealer hand : {dealer_hand[0]}")
+
+
+
+continue_playing = True
+
+while continue_playing:
+    if sum(player_hand) == 21 and len(player_hand) == 2:
+        if sum(dealer_hand) == 21 and len(dealer_hand) == 2:
+            print(f"the player hand : {player_hand} = {sum(player_hand)}")
+            print(f"the Casino hand : {dealer_hand} = {sum(dealer_hand)}")
+            print("Blackjack, The casino is wining!")
+        else:
+            print(f"the player hand : {player_hand} = {sum(player_hand)}")
+            print(f"the Casino hand : {dealer_hand} = {sum(dealer_hand)}")
+            print("Blackjack, Tha player is wining!")
+
+    if sum(player_hand) <= 21:
+        if sum(player_hand) < 17:
+            player_hand.append(pick_card())
+            print(f"the player hand : {player_hand} = {sum(player_hand)}")
+        else:
+            want_card = input("Do you want to pick a card ? type 'yes' or 'no' : ")
+            if want_card == "yes":
+                player_hand.append(pick_card())
+                print(f"the player hand : {player_hand} = {sum(player_hand)}")
+            else:
+                print(f"the player hand : {player_hand} = {sum(player_hand)}")
+
+                end_game = False
+                print(f"The dealer hand : {dealer_hand}")
+                while not end_game:
+                    if sum(dealer_hand) <= 21:
+                        if sum(dealer_hand) < sum(player_hand):
+                            dealer_hand.append(pick_card())
+                            print(f"The dealer hand : {dealer_hand} = {sum(dealer_hand)}")
+                        elif sum(dealer_hand) == sum(player_hand):
+                            print("Egalité, vous recuperez votre mise!")
+                            end_game = True
+                        else:
+                            print("The casino is wining!")
+                            end_game = True
+                    else:
+                        if 11 in dealer_hand:
+                            # Remplacer les 11 par les 1 pour les "A" dans le cas ou on a depassé 21
+                            dealer_hand = [1 if x == 11 else x for x in dealer_hand]
+                            print(f"The dealer hand : {dealer_hand} = {sum(dealer_hand)}")
+                        else:
+                            print("You are wining!")
+                            end_game = True
+
+                continue_playing = False
+    else:
+        if 11 in player_hand:
+            # Remplacer les 11 par les 1 pour les "A" dans le cas ou on a dépassé 21
+            player_hand = [1 if x == 11 else x for x in player_hand]
+            print(f"the player hand : {player_hand} = {sum(player_hand)}")
+        else:
+            print("You lost!")
+            continue_playing = False
